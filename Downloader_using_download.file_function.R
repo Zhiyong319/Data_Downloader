@@ -14,7 +14,7 @@ for (ifile in 1:60) {
   
   # file <- paste0('2019ge_eftables_cb6_st',formatC(ifile, width=2, flag="0"),'.zip')
   file <- paste0('2019ge_eftables_cb6_st',ifile,'.zip')
-  destPath <- 'C:/Users/zwu/Downloads/2019/2019emissions/'
+  destPath <- 'C:/Users/Downloads/'
   destfile <- paste0(destPath,file)
   
   if (!file.exists(destfile)) { 
