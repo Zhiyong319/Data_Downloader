@@ -1,4 +1,4 @@
-# set the environment
+### set the environment
 rm(list = ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
@@ -7,12 +7,11 @@ library(jsonlite)
 library(openxlsx)
 # library(rjson)
 
-# sensor info list
-sensors <- read.xlsx('C:/Users/zwu/OneDrive - Research Triangle Institute/AQSEA/PurpleAir/PurpleAirSensors20230713.xlsx', "SensorInfo")
+### sensor info list
+sensors <- read.xlsx('PurpleAirSensors20230713.xlsx', "SensorInfo")
 # str(sensors)
 
-# API_Key <- "BB522A7E-203A-11EE-A77F-42010A800009"  # zwu@rti
-API_Key <- "5409040B-20F1-11EE-A77F-42010A800009" # Ryan
+API_Key <- "xxxxx" 
 
 # The map has history data period limits. They are as follows:
 #   
@@ -30,14 +29,11 @@ API_Key <- "5409040B-20F1-11EE-A77F-42010A800009" # Ryan
 time_interval <- 60 # The desired average in minutes, one of the following: 0 (real-time), 10 (default if not specified), 30, 60, 360 (6 hour), 1440 (1 day)
 time_step <- 14*24*60*60 # in seconds
 
-# for (id in 1:nrow(sensors)) {
-for (id in 15:nrow(sensors)) {
+for (id in 1:nrow(sensors)) {
   
-  # set the start and end time and create full time sequences 
+  # set the start and end time 
   starttime <- as.POSIXct("2020-12-31 00:00:00 UTC", origin="1970-01-01", tz="UTC")
   endtime   <- as.POSIXct("2023-07-01 23:00:00 UTC", origin="1970-01-01", tz="UTC")
-  TIME_seq <- seq(unclass(starttime),unclass(endtime),60*60) # 1 hour interval
-  TIME <- as.POSIXct(TIME_seq, origin="1970-01-01", tz="UTC")
   
   rawdata <- data.frame(matrix(ncol = 0, nrow = 0)) # initiate the data.frame to store data
   while (starttime < endtime) {
@@ -82,7 +78,7 @@ for (id in 15:nrow(sensors)) {
     
     rawdata_out <- rawdata[,c('sensor_index','time','pm2.5_atm_a','pm2.5_atm_b','temperature','humidity','pressure')]
     
-    filename <- paste('C:/Users/zwu/OneDrive - Research Triangle Institute/AQSEA/PurpleAir/raw/Download/',sensors$sensor_name[id],'_60min.csv',sep="")
+    filename <- paste(sensors$sensor_name[id],'_60min.csv',sep="")
     write.csv(rawdata_out,file=filename,row.names =FALSE)
   } else {
     print('!!!',paste(sensors$sensor_index[id],'no data avaiable during the defined period !!!'))
