@@ -1,4 +1,4 @@
-# set the environment
+### set the environment
 rm(list = ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
@@ -7,12 +7,10 @@ library(jsonlite)
 library(openxlsx)
 # library(rjson)
 
-# sensor info list
-sensors <- read.xlsx('C:/Users/zwu/OneDrive - Research Triangle Institute/AQSEA/PurpleAir/PurpleAirSensors20230713.xlsx', "sensors")
-sensors <- sensors[sensors$sensor_index != "n/a" & !is.na(sensors$sensor_index),]
-# str(sensors)
+### sensor info list
+sensors <- read.xlsx('PurpleAirSensors20230713.xlsx', "sensors") # MUST have column: sensor_index
 
-API_Key <- "5409040B-20F1-11EE-A77F-42010A800009"
+API_Key <- "xxxxxx"
 
 rawdata <- data.frame(matrix(ncol = 0, nrow = 0)) # initiate the data.frame to store data 
 for (id in 1:nrow(sensors)) {
@@ -32,7 +30,7 @@ for (id in 1:nrow(sensors)) {
     
     rawdata <- rbind(rawdata, df)
   } else {
-    print(paste(sensors$sensor_index[id],sensors$SENSOR_NAME[id],'download FAILED!!!'))
+    print(paste(sensors$sensor_index[id],'download FAILED!!!'))
   }
   
 }
@@ -40,14 +38,4 @@ for (id in 1:nrow(sensors)) {
 rawdata$date_created <- as.POSIXct(rawdata$sensor.date_created, origin="1970-01-01", tz="UTC")
 rawdata_out <- rawdata[,c("sensor.name","sensor.sensor_index","date_created","sensor.latitude","sensor.longitude","sensor.altitude")]
 
-# write.csv(rawdata_out,file="C:/Users/zwu/OneDrive - Research Triangle Institute/AQSEA/PurpleAir/SensorInfo.csv",row.names =FALSE)
-
-### compare sensor info
-# sum(sensors$SENSOR_NAME== rawdata_out$sensor.name)
-# sum(sensors$sensor_index== rawdata_out$sensor.sensor_index)
-# 
-# plot(sensors$LATITUDE, rawdata_out$sensor.latitude)
-# range(sensors$LATITUDE-rawdata_out$sensor.latitude, na.rm = T)
-# 
-# plot(sensors$LONGITUDE, rawdata_out$sensor.longitude)
-# range(sensors$LONGITUDE-rawdata_out$sensor.longitude, na.rm = T)
+write.csv(rawdata_out,file="SensorInfo.csv",row.names =FALSE)
