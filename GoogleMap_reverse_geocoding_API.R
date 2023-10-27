@@ -11,7 +11,8 @@ source('../myRfunctions/myRfunctions.R')
 
 sites <- read.csv('myfile.csv') # MUST include columns: Latitude and Longitude
 sites$state <- NA
-ites$country <- NA 
+sites$country <- NA
+sites$zipcode <- NA
 
 API_Key <-"your_GOOGLE_API_key" 
 
@@ -40,8 +41,14 @@ for (id in 1:nrow(sites)) {
   # sites$country[id] <- compound_code[length(compound_code)] # the last item
   
   formatted_address <- strsplit(dat$results[[2]]$formatted_address,",")[[1]]
+  # formatted_address <- strsplit(dat$results[[3]]$formatted_address,",")[[1]]
+  # formatted_address <- strsplit(dat$results[[3]]$formatted_address,",")[[1]]
+  # formatted_address <- strsplit(dat$results[[4]]$formatted_address,",")[[1]]
+  # formatted_address <- strsplit(dat$results[[5]]$formatted_address,",")[[1]]
   sites$state[id] <- trimws(formatted_address[length(formatted_address)-1]) # the last second item
   sites$country[id] <- trimws(formatted_address[length(formatted_address)]) # the last item
+  sites$zipcode[id] <- trimws(strsplit(formatted_address[length(formatted_address)-1]," ")[[1]][3]) # the last second item
+  
 }
 
 ### write data
