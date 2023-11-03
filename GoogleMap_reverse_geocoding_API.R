@@ -22,9 +22,9 @@ for (id in 1:nrow(sites)) {
   response <- GET(geocoding_url, content_type_json())
   
   if (response$status_code==200) {
-    print(paste(sites$siteID[id],'GOOD!'))
+    print(paste(id,'GOOD!'))
   } else {
-    print(paste(sites$siteID[id],'FAILED!!!'))
+    print(paste(id,'FAILED!!!'))
   }
   
   # convert raw data to char
