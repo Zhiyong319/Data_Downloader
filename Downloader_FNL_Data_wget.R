@@ -5,8 +5,8 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 cat("\014")
 
 ### login
-email = "zwu@rti.org"
-pass <- "Wu123456"
+email = "your_email"
+pass <- "your_password"
 
 system(paste0('wget.exe -O auth_status.rda.ucar.edu --save-cookies auth.rda_ucar_edu  --post-data="email=', email, '&passwd=', pass, '&action=login" https://rda.ucar.edu/cgi-bin/login'))
 
